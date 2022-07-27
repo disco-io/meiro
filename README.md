@@ -19,4 +19,4 @@ You and your Mudkip are on a mission to escape a dangerous maze and rescue the S
 # 🤝 credits + contributions
 
 Thanks to H. Challa, A. Li, and M. Eckel for their contributions and/or guidance.
-All icons were taken from the internet. 
+All icons/images were taken from the internet. 
