@@ -15,3 +15,8 @@ You and your Mudkip are on a mission to escape a dangerous maze and rescue the S
 
 # game preview
 ![image](https://user-images.githubusercontent.com/80224791/181285702-9709eece-e814-49a7-abc7-4dd3fa927cb3.png)
+
+# contributions
+
+Thanks to H. Challa, A. Li, and M. Eckel for their contributions and/or guidance.
+All icons were taken from the internet. 
