@@ -4,7 +4,7 @@ You and your Mudkip are on a mission to escape a dangerous maze and rescue the S
 
 ... But be careful...! There are many wild Pokémon lurking in every corner of the maze, waiting to attack your Mudkip.
 
-![mudkip](https://user-images.githubusercontent.com/80224791/181291532-e469c584-45f6-47a5-a9e3-e879b600e43b.png) Mudkip: 100 hp 
+![mudkip](https://user-images.githubusercontent.com/80224791/181340259-ddf66df6-087f-4d54-82e1-2ddcc584e1b9.png) Mudkip: 100 hp 
 
 ![bulbasaur](https://user-images.githubusercontent.com/80224791/181292126-3871ada0-cb95-480e-8dfa-79582b0585a6.png) Bulbasaur: 20 hp, hostile wild lvl. 1
 
