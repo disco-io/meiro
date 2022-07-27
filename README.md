@@ -16,6 +16,11 @@ You and your Mudkip are on a mission to escape a dangerous maze and rescue the S
 
 ![shiny (1)](https://user-images.githubusercontent.com/80224791/181313586-6072e5c1-6084-4241-9345-65f0a0fbf8b2.png) Shiny: 70 hp, hostile wild lvl. 5 
 
+![pokeball](https://user-images.githubusercontent.com/80224791/181335817-5c5706d4-4ff4-4457-99c9-57b6252aea14.png)
+
+![oranberry (3)](https://user-images.githubusercontent.com/80224791/181338624-27296348-02b4-42d0-a895-5a4c2e0995d1.png)
+
+
 
 ![image](https://user-images.githubusercontent.com/80224791/181285702-9709eece-e814-49a7-abc7-4dd3fa927cb3.png)
 
