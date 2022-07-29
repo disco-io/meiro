@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.*;
 
 public class GUIPanel extends JPanel
 {
@@ -19,7 +20,7 @@ public class GUIPanel extends JPanel
 
    private static int[][] OranBerry = {{46, 105}, {123, 85}, {244, 363}, {284, 363}, {324, 363}, {324, 323}, {128, 6}, {324, 283}, {362, 323}, {362, 283}, {362, 45}, {243, 245}, {45, 323}, {124, 323}, {7, 132}, {120, 245}, {262, 124}};
 
-   public GUIPanel()
+   public GUIPanel() throws Exception
    {
       setLayout(new BorderLayout());
    //north
@@ -61,13 +62,14 @@ public class GUIPanel extends JPanel
       hpLabel.setHorizontalAlignment(SwingConstants.RIGHT);
       statspanel.add(hpLabel);
    //----------------------------------------------
-      hpNum = 400;
+      hpNum = 100;
       hpCount = new JLabel("" + hpNum);
       hpCount.setFont(new Font("Serif", Font.BOLD, 25));
       hpCount.setHorizontalAlignment(SwingConstants.CENTER);
       statspanel.add(hpCount);
       subpanel.add(statspanel);
-      JButton scoresheet = new JButton("end and view hi-scores");
+      JButton scoresheet = new JButton("end and save scores");
+      scoresheet.addActionListener(new SaveListener());
       scoresheet.setFont(new Font("Serif", Font.BOLD, 15));
       scoresheet.setHorizontalAlignment(SwingConstants.CENTER);
       subpanel.add(scoresheet);
@@ -113,6 +115,24 @@ public class GUIPanel extends JPanel
       return (x >= 0 && x <= MazePanel.FRAME) && (y >= 0 && y <= MazePanel.FRAME);
    }
  
+   class SaveListener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent e)
+      {
+         try
+         {  //file i/o
+            File f = new File("hs.txt");
+            FileWriter fw = new FileWriter("hs.txt");
+            fw.write("pokeballs: " + pkbNum + ", hp: " + hpNum + ", friends: " + friendNum + "\n");
+            fw.close();
+         }
+         catch (Exception exp)
+         {
+            System.out.println("error");
+         }
+      }
+   }
+ 
    class MazePanel extends JPanel implements KeyListener, ActionListener
    {
    //fields:
@@ -123,15 +143,22 @@ public class GUIPanel extends JPanel
       private Graphics myBuffer;
       private Mudkip mudkip;
       private Pokeball pokeball;
+      private Pikachu pikachu;
+      private Bulbasaur bulbasaur;
+      private Torchic torchic;
+      private Whismur whismur;
+      private Shiny shiny;
       private Oranberry oran;
       private Ability ability;
-      private Timer t, timer;
+      private Timer t, timer, t2;
      
       private int[][] Pikachus = {{83, 5, 30, 1}, {242, 85, 30, 1}, {324, 202, 30, 0}, {124, 285, 30, 0}, {78, 203, 30, 1}};
       private int[][] Bulbasaurs = {{83, 165, 20, 1}, {276, 6, 20, 1}, {162, 45, 20, 1}, {284, 165, 20, 0}, {322, 243, 20, 1}, {200, 362, 20, 1}, {6, 362, 20, 0}, {162, 244, 20, 1}};
       private int[][] Torchics = {{162, 119, 40, 1}, {245, 45, 40, 0}, {242, 202, 40, 0}, {84, 321, 40, 0}, {45, 280, 40, 1}};
       private int[][] Whismurs = {{164, 162, 50, 0}, {241, 162, 50, 1}, {204, 122, 50, 0}, {320, 122, 50, 1}};
       private int[][] Shinies = {{360, 361, 70, 1}};
+     
+      private int[] ogDmg = {30, 20, 40, 50, 70};
      
       private Pokemon[] pikachus, bulbasaurs, torchics, whismurs, shinies;
       private Pokemon[][] myPokemons;
@@ -172,7 +199,7 @@ public class GUIPanel extends JPanel
          for (int i = 0; i < Shinies.length; i++)
          {
             shinies[i] = new Shiny();
-       }
+         }
          
          myPokemons = new Pokemon[][]{pikachus, bulbasaurs, torchics, whismurs, shinies};
          
@@ -273,6 +300,35 @@ public class GUIPanel extends JPanel
          }
       }
      
+      public void throwBall()
+      {
+         if (pkbNum > 0)
+         {
+            pkbNum--;
+            pkbCount.setText(""+pkbNum);
+            if (mudkip.addBall())
+            {
+               t2 = new Timer(50, new BallCycle());
+               t2.start();
+            }
+         }
+      }
+     
+      class BallCycle implements ActionListener
+      {
+         public void actionPerformed(ActionEvent e)
+         {
+            if (!onScreen(mudkip.getBall().getX(), mudkip.getBall().getY()))
+            {
+               t2.stop();
+               mudkip.nullBall();
+               return;
+            }
+            mudkip.moveBall();
+            MoveAction(mudkip.getRight());
+         }
+      }
+     
       class GameCycle implements ActionListener
       {
          public void actionPerformed(ActionEvent e)
@@ -288,11 +344,17 @@ public class GUIPanel extends JPanel
 
          }
       }
-      // the nested for loop!!! 
+
       class DistanceChecker implements ActionListener
       {
          public void actionPerformed(ActionEvent e)
          {
+            if (hpNum <= 0)
+            {
+               mudkip.kill();
+               MoveAction(true);
+               return;
+            }
             int count = 0;
             for (int[][] pokemons: new int[][][]{Pikachus, Bulbasaurs, Torchics, Whismurs, Shinies})
             {
@@ -330,7 +392,21 @@ public class GUIPanel extends JPanel
                            mudkip.nullBullet();
                            t.stop();
                         }
-                     }  
+                     }
+                     if (mudkip.getBall() != null)
+                     {
+                        if (mudkip.getBall().collide(pokemons[i][0], pokemons[i][1], 35))
+                        {
+                           if (pokemons[i][2] * 2 <= ogDmg[count])
+                           {
+                              pokemons[i][2] = 0;
+                              friendNum++;
+                              friendCount.setText("" + friendNum);
+                           }
+                           mudkip.nullBall();
+                           t2.stop();
+                        }
+                     }
                   }    
                }
                count++;
@@ -361,13 +437,13 @@ public class GUIPanel extends JPanel
          {
             if( OranBerry[i][0]>=x-10 && OranBerry[i][0]<=x+10 && OranBerry[i][1]>=y-10 && OranBerry[i][1]<=y+10)
             {
-                if (hpNum <= 390)
+                if (hpNum < 90)
                 {
                   hpNum += 10;
                 }
                 else
                 {
-                  while (hpNum < 400)
+                  while (hpNum < 100)
                     {
                       hpNum++;
                     }
@@ -425,6 +501,11 @@ public class GUIPanel extends JPanel
                mudkip.move(0,10);  
                MoveAction(true);
             }
+         }
+         
+         else if(e.getKeyChar() == 'E' || e.getKeyChar() == 'e')
+         {
+            throwBall();
          }
       }
 
