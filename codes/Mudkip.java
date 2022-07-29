@@ -14,6 +14,8 @@ public class Mudkip extends Pokemon
   private int my;
   private int mx;
   private int size;
+  private boolean alive;
+  private PokeBallAbility pokeball;
   private int[][] PlayArea = {{10, 5},{20, 5},{30, 5},{40, 5},{50, 5},{60, 5},{70, 5},{80, 5},{130, 5},{140, 5},{150, 5},{160, 5},{170, 5},{180, 5},{190, 5},{200, 5},{210, 5},{220, 5},{230, 5},{240, 5},{250, 5},{260, 5},{270, 5},{280, 5},{320, 5},{330, 5},{340, 5},{350, 5},{360, 5}, {10, 15}, {10, 25}, {10, 35}, {10, 45}, {10, 55}, {10, 65}, {10, 75}, {10, 85}
   ,{40, 45},{50, 45},{60, 45},{70, 45},{80, 45},{120, 45},{130, 45},{140, 45},{150, 45},{160, 45},{170, 45},{180, 45},{190, 45},{200, 45},{240, 45},{250, 45},{260, 45},{270, 45},{280, 45},{290, 45},{300, 45},{310, 45},{320, 45}
   ,{80, 85},{90, 85},{100, 85},{110, 85},{120, 85},{130, 85},{140, 85},{150, 85},{160, 85},{210, 85},{220, 85},{230, 85},{240, 85},{250, 85},{260, 85},{270, 85},{280, 85},{290, 85},{300, 85},{310, 85},{320, 85},{330, 85},{340, 85},{350, 85},{360, 85}
@@ -44,11 +46,13 @@ public class Mudkip extends Pokemon
     my = 5;
     mx = 0;
     size = 35;
+    alive = true;
   }
 
   //instance methods:
   public void draw(Graphics myBuffer, boolean right)
   {
+    if (!alive) return;
     this.right = right;
     if (right)
     {
@@ -59,10 +63,12 @@ public class Mudkip extends Pokemon
       myBuffer.drawImage(mdkp, mx+size , my, -size, size, null, null);
     }
     if (bullet != null) bullet.draw(myBuffer);
+    if (pokeball != null) pokeball.draw(myBuffer);
   }
 
   public void move(int dx, int dy)
   {
+    if (!alive) return;
     my += dy;
     mx += dx;
   }
@@ -82,6 +88,7 @@ public class Mudkip extends Pokemon
 
   public boolean CanMove(int x, int y)
   {
+     if (!alive) return false;
      for (int i = 0; i < PlayArea.length; i++)
      {
         if(mx+x==PlayArea[i][0] && my+y == PlayArea[i][1])
@@ -105,31 +112,66 @@ public class Mudkip extends Pokemon
       return false;
   }
 
-     public boolean onBerry(int x, int y)
+  public boolean onBerry(int x, int y)
+  {
+   if (!alive) return false;
+   int[][] OranBerry = GUIPanel.getOran();
+   for (int i = 0; i < OranBerry.length; i++)
+   {
+     if( OranBerry[i][0]>=x-10 && OranBerry[i][0]<=x+10 && OranBerry[i][1]>=y-10 && OranBerry[i][1]<=y+10)
      {
-      int[][] OranBerry = GUIPanel.getOran();
-      for (int i = 0; i < OranBerry.length; i++)
-      {
-        if( OranBerry[i][0]>=x-10 && OranBerry[i][0]<=x+10 && OranBerry[i][1]>=y-10 && OranBerry[i][1]<=y+10)
-        {
-          return true;
-        }
-      }
-      return false;
+       return true;
      }
-     
-     public boolean addBullet()
-     {
-      return addBullet(mx, my, 1);
-     }
+   }
+   return false;
+  }
+ 
+  public boolean addBullet()
+  {
+   if (!alive) return false;
+   return addBullet(mx, my, 1);
+  }
 
-     public boolean getRight()
-     {
-      return right;
-     }
-     
-     public double distance(int x, int y)
-     {
-      return Math.pow(Math.pow(mx-x, 2) + Math.pow(my-y, 2)*2, 0.5);
-     }
+  public boolean getRight()
+  {
+   return right;
+  }
+ 
+  public double distance(int x, int y)
+  {
+   return Math.pow(Math.pow(mx-x, 2) + Math.pow(my-y, 2)*2, 0.5);
+  }
+ 
+  public void kill()
+  {
+   alive = false;
+  }
+ 
+  public boolean addBall()
+  {
+   if (pokeball == null)
+   {
+      pokeball = new PokeBallAbility(mx + ((right)?size/2:0), my + size/2-10, ((right)?1:-1));
+      return true;
+   }
+   return false;
+  }
+ 
+  public PokeBallAbility getBall()
+  {
+   return pokeball;
+  }
+ 
+  public void moveBall()
+  {
+   if (pokeball != null)
+   {
+      pokeball.move();
+   }
+  }
+ 
+  public void nullBall()
+  {
+   pokeball = null;
+  }
 }
