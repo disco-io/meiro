@@ -6,7 +6,7 @@ You and your Mudkip are on a mission to escape a dangerous maze and rescue the S
 
 # 📖 meiro's pokédex
 
-| Character ID  | Character Icon | Health Points | Damage |  | Character ID  | Character Icon | Health Points | Damage |
+| Character | Character Icon | Health Points | Damage |  | Character | Character Icon | Health Points | Damage |
 | ------------- | -------------  | ------------- | ------ | - | ------------- | -------------  | ------------- | ------ |
 | Mudkip | ![mudkip](https://user-images.githubusercontent.com/80224791/181340259-ddf66df6-087f-4d54-82e1-2ddcc584e1b9.png) | 100 hp  | 10/attack |  | Oran Berry | ![oranberry](https://user-images.githubusercontent.com/80224791/181338624-27296348-02b4-42d0-a895-5a4c2e0995d1.png) | +10 hp  | N/A |
 | Bulbasaur | ![bulbasaur](https://user-images.githubusercontent.com/80224791/181292126-3871ada0-cb95-480e-8dfa-79582b0585a6.png)  | 20 hp  | 1/attack | | Pikachu | ![pikachu](https://user-images.githubusercontent.com/80224791/181313174-dd23c0fd-3690-4d8e-9f61-c7ec1a1ffb46.png) | 30 hp | 1/attack |
