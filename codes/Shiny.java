@@ -3,23 +3,19 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 
-public class Shiny
+public class Shiny extends Pokemon
 {
   //fields:
   public static final int FRAME = 400;
-  
-  private Image shny;
-  private BufferedImage myImage;
 
   //constructors:
   public Shiny()
   {
-    shny = (new ImageIcon("shiny.png")).getImage();
+    myImage = (new ImageIcon("shiny.png")).getImage();
   }
-
-  //instance methods:
-  public void draw(Graphics myBuffer, int x, int y, int size)
+  
+  public boolean addBullet(int mx, int my)
   {
-    myBuffer.drawImage(shny, x, y, size, size, null, null);
+   return addBullet(mx, my, 0);
   }
 }
